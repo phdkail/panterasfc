@@ -1,0 +1,68 @@
+.footer {
+  background: linear-gradient(to right, #ffffff, #3b3c3e); /* 🔹 Degradado */
+  color: rgb(176, 64, 64);
+  border-bottom: 3px solid #FFC72C; /* 🔹 Línea dorada */
+  padding: 40px 100px;
+  width: 100%; /* 🔹 Se extiende al ancho total */
+  max-width: 1800px; /* 🔹 Máximo de 1800px */
+  margin: 0 auto; /* 🔹 Centrado */
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.footer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1950px;
+  margin: 0 auto;
+  gap: 20px;
+}
+
+@media (min-width: 768px) {
+  .footer-container {
+    flex-direction: row; /* 🔹 En filas en pantallas grandes */
+  }
+}
+
+.footer-logo-container {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}
+
+.footer-logo {
+  max-width: 120px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.footer-logo:hover {
+  opacity: 0.75;
+  transform: scale(1.05);
+}
+
+.footer-copyright {
+  flex: 2; /* 🔹 Para que el texto tenga más espacio */
+  text-align: center;
+  font-size: 14px;
+  color: #ccc;
+}
+
+.footer-social {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  font-size: 24px;
+  flex: 1;
+}
+
+.social-icon {
+  color: white;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.social-icon:hover {
+  opacity: 0.75;
+}

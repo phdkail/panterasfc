@@ -1,0 +1,62 @@
+/* Contenedor del carrusel */
+.carousel-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px; /* Ajusta el tamaño del carrusel */
+    margin: auto;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* Sombra alrededor */
+}
+
+/* Imagen */
+.carousel-image img {
+    width: 100%;
+    height: auto; /* 🔹 Ajusta la altura automáticamente */
+    max-height: 600px; /* 🔹 Limita la altura máxima */
+    object-fit: contain; /* 🔹 Muestra la imagen completa sin recortarla */
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Efecto de rotación y sombra al pasar el mouse */
+.carousel-image img:hover {
+    transform: scale(1.05); /* 🔹 Solo un pequeño zoom en lugar de rotación */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Botones de navegación */
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 24px;
+    transition: background 0.3s ease;
+}
+
+.carousel-btn:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.prev {
+    left: 10px;
+}
+
+.next {
+    right: 10px;
+}
+
+/* 🔹 Ajustes Responsivos */
+@media (max-width: 768px) {
+    .carousel-container {
+        max-width: 100%;
+    }
+
+    .carousel-image img {
+        max-height: 300px; /* 🔹 Reduce la altura en móviles */
+    }
+}

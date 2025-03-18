@@ -1,0 +1,82 @@
+.banner {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; /* 🔹 Inspirado en el header */
+  align-items: center;
+  padding: 10px 30px;
+  background: linear-gradient(to right, #3b3c3e, #ffffff);
+  color: white;
+  width: 100%;
+  height: 120px;
+  margin: 0 auto; /* 🔹 Centrado con margen ajustado */
+  border-radius: 0;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.miembros {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #2a3b4c; /* 🔹 Azul metálico de fondo */
+  color: white;
+  width: 100%;
+  max-width: 1600px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.miembros-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* 🔹 Distribución equilibrada */
+  gap: 20px; /* 🔹 Espaciado optimizado para mayor claridad */
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.miembros-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 8px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  flex: 1 1 calc(25% - 20px); /* 🔹 Cards uniformes y bien distribuidos */
+  max-width: 300px; /* 🔹 Ancho fijo para evitar inconsistencias */
+  height: auto;
+}
+
+.miembros-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.miembros-card img {
+  width: 100%; /* 🔹 Escalado completo dentro del card */
+  height: 400px;
+  object-fit: cover; /* 🔹 Asegura que la imagen se ajuste bien */
+  border-radius: 8px;
+  border: 2px solid #e0e0e0;
+  background-color: #f9f9f9;
+  padding: 5px;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.miembros-card img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
+}
+
+.miembros-card h3 {
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.miembros-card p {
+  font-size: 12px;
+  color: #000000;
+}
