@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 📌 "README.md - "Panteras FC"
 🏆 Panteras FC
 Desarrollado por: Kail
@@ -116,3 +117,6 @@ Haz un pull request con tus cambios.
 
 🚀 ¡Gracias por visitar la web del Campeonato Relámpago "Mis Primeros 20 en la UNI"!
 Desarrollado con pasión por Kail ❤️
+=======
+# panterasfc
+>>>>>>> f35c5c432265a1b7c988c415c22527a9fadbedfd
