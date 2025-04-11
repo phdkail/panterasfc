@@ -1,0 +1,93 @@
+/* Avatar */
+.rt-AvatarRoot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  overflow: hidden;
+  user-select: none;
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+}
+
+.rt-AvatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+
+.rt-AvatarFallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--gray-4);
+  color: var(--gray-11);
+  font-size: 15px;
+  line-height: 1;
+  font-weight: 500;
+}
+
+/* Dialog */
+.rt-DialogOverlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  inset: 0;
+  animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.rt-DialogContent {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 450px;
+  max-height: 85vh;
+  padding: 1.5rem;
+  animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.rt-DialogContent:focus {
+  outline: none;
+}
+
+.rt-DialogTitle {
+  margin: 0;
+  font-weight: 500;
+  color: var(--gray-12);
+  font-size: 1.25rem;
+}
+
+.rt-DialogDescription {
+  margin: 0.5rem 0 1.5rem;
+  color: var(--gray-11);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+@keyframes overlayShow {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+} 

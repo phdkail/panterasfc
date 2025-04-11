@@ -1,26 +1,51 @@
-import "../styles/contactCard.css"; // Archivo CSS para estilos
+import React from 'react';
 
-export default function ContactCard() {
+const ContactCard = () => {
   return (
-    <div className="contact-card">
-      <div className="card-header">
-        <img src="/images/kail.jpg" alt="Foto de Kail" className="profile-pic" />
-        <h2>Kail</h2>
-        <p className="role">Desarrollador | Viajero | Fotógrafo</p>
-      </div>
-
-      <div className="card-body">
-        <p className="quote">
-          "Peekaboo!! Globetrotter!! Liviano de equipaje, trotamundos sin destino, soñador sin límites! 
-          Ética, resiliencia, empatía, paciencia y buen humor 🍀❣️✨"
-        </p>
-        
-        <div className="contact-info">
-          <p><strong>📍 Ubicación:</strong> Torino, IT 🌎</p>
-          <p><strong>📸 Instagram:</strong> <a href="https://www.instagram.com/phdkail" target="_blank">@phdkail</a></p>
-          <p><strong>📧 Email:</strong> <a href="mailto:phdkail@gmail.com">phdkail@gmail.com</a></p>
-        </div>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-4xl font-bold text-center mb-8">Contacto</h1>
+      <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-8">
+        <form className="space-y-6">
+          <div>
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              Nombre
+            </label>
+            <input
+              type="text"
+              id="name"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-accent focus:ring-accent"
+            />
+          </div>
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-accent focus:ring-accent"
+            />
+          </div>
+          <div>
+            <label htmlFor="message" className="block text-sm font-medium text-gray-700">
+              Mensaje
+            </label>
+            <textarea
+              id="message"
+              rows={4}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-accent focus:ring-accent"
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-accent text-primary py-2 px-4 rounded-md hover:bg-accent-light transition-colors"
+          >
+            Enviar Mensaje
+          </button>
+        </form>
       </div>
     </div>
   );
-}
+};
+
+export default ContactCard; 
