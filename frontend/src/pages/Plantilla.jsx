@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent, Typography, Grid, Box, CircularProgress, Alert } from '@mui/material';
 import { Search, Filter } from 'lucide-react';
 import { cn } from '../lib/utils';
-import { Typography, Grid, Box, CircularProgress, Alert } from '@mui/material';
-import { Link } from 'react-router-dom';
 
 const Plantilla = () => {
   const [jugadores, setJugadores] = useState([]);
@@ -19,7 +14,7 @@ const Plantilla = () => {
     const fetchJugadores = async () => {
       try {
         console.log('Intentando conectar con el backend...');
-        const response = await fetch('http://localhost:8000/api/jugadores', {
+        const response = await fetch('http://localhost:3001/api/jugadores', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -52,31 +47,27 @@ const Plantilla = () => {
                          jugador.chaleco.toString().includes(searchTerm);
     
     const matchesFilter = filter === 'todos' || 
-                         (filter === 'goleadores' && jugador.golesAcumulados > 0) ||
-                         (filter === 'asistentes' && jugador.asistenciasAcumuladas > 0);
+                         (filter === 'porteros' && jugador.posicion.toLowerCase() === 'portero') ||
+                         (filter === 'defensas' && jugador.posicion.toLowerCase() === 'defensa') ||
+                         (filter === 'mediocentros' && jugador.posicion.toLowerCase() === 'mediocentro') ||
+                         (filter === 'delanteros' && jugador.posicion.toLowerCase() === 'delantero');
 
     return matchesSearch && matchesFilter;
   });
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-accent mb-4"></div>
-          <p className="text-gray-600">Cargando datos de los jugadores...</p>
-        </div>
-      </div>
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
+        <CircularProgress />
+      </Box>
     );
   }
 
   if (error) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-          <strong className="font-bold">Error: </strong>
-          <span className="block sm:inline">{error}</span>
-        </div>
-      </div>
+      <Box p={3}>
+        <Alert severity="error">{error}</Alert>
+      </Box>
     );
   }
 
@@ -136,148 +127,58 @@ const Plantilla = () => {
               onChange={(e) => setFilter(e.target.value)}
             >
               <option value="todos">Todos</option>
-              <option value="goleadores">Goleadores</option>
-              <option value="asistentes">Asistentes</option>
+              <option value="porteros">Porteros</option>
+              <option value="defensas">Defensas</option>
+              <option value="mediocentros">Mediocentros</option>
+              <option value="delanteros">Delanteros</option>
             </select>
           </div>
         </div>
 
-        <Tabs defaultValue="todos" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-8">
-            <TabsTrigger value="todos">Todos</TabsTrigger>
-            <TabsTrigger value="porteros">Porteros</TabsTrigger>
-            <TabsTrigger value="defensas">Defensas</TabsTrigger>
-            <TabsTrigger value="mediocentros">Mediocentros</TabsTrigger>
-            <TabsTrigger value="delanteros">Delanteros</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="todos">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredJugadores.map((jugador) => (
-                <Card key={jugador.id} className="hover:shadow-lg transition-shadow">
-                  <CardHeader className="flex flex-row items-center gap-4">
-                    <Avatar className="h-16 w-16">
-                      <AvatarImage src={jugador.imagen} alt={jugador.apodo} />
-                      <AvatarFallback>{jugador.apodo[0]}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <CardTitle className="text-xl">{jugador.apodo}</CardTitle>
-                      <div className="flex gap-2 mt-2">
-                        <Badge variant="outline">#{jugador.chaleco}</Badge>
-                        <Badge variant="secondary">{jugador.posicion}</Badge>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Pierna:</span>
-                        <span>{jugador.pierna}</span>
-                      </div>
-                      {jugador.equipoNacional && (
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Selección:</span>
-                          <span>{jugador.equipoNacional}</span>
-                        </div>
-                      )}
-                      {jugador.equipoInternacional && (
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Club:</span>
-                          <span>{jugador.equipoInternacional}</span>
-                        </div>
-                      )}
-                      <div className="border-t border-gray-200 my-2" />
-                      <div className="grid grid-cols-3 gap-2 text-center">
-                        <div>
-                          <div className="text-sm text-muted-foreground">Partidos</div>
-                          <div className="font-bold">{jugador.partidosAcumulados}</div>
-                        </div>
-                        <div>
-                          <div className="text-sm text-muted-foreground">Goles</div>
-                          <div className="font-bold">{jugador.golesAcumulados}</div>
-                        </div>
-                        <div>
-                          <div className="text-sm text-muted-foreground">Asistencias</div>
-                          <div className="font-bold">{jugador.asistenciasAcumuladas}</div>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
-
-          {['porteros', 'defensas', 'mediocentros', 'delanteros'].map((posicion) => (
-            <TabsContent key={posicion} value={posicion}>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredJugadores
-                  .filter(jugador => jugador.posicion.toLowerCase() === posicion)
-                  .map((jugador) => (
-                    <Card key={jugador.id} className="hover:shadow-lg transition-shadow">
-                      <CardHeader className="flex flex-row items-center gap-4">
-                        <Avatar className="h-16 w-16">
-                          <AvatarImage src={jugador.imagen} alt={jugador.apodo} />
-                          <AvatarFallback>{jugador.apodo[0]}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <CardTitle className="text-xl">{jugador.apodo}</CardTitle>
-                          <div className="flex gap-2 mt-2">
-                            <Badge variant="outline">#{jugador.chaleco}</Badge>
-                            <Badge variant="secondary">{jugador.posicion}</Badge>
-                          </div>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-2">
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">Pierna:</span>
-                            <span>{jugador.pierna}</span>
-                          </div>
-                          {jugador.equipoNacional && (
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">Selección:</span>
-                              <span>{jugador.equipoNacional}</span>
-                            </div>
-                          )}
-                          {jugador.equipoInternacional && (
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">Club:</span>
-                              <span>{jugador.equipoInternacional}</span>
-                            </div>
-                          )}
-                          <div className="border-t border-gray-200 my-2" />
-                          <div className="grid grid-cols-3 gap-2 text-center">
-                            <div>
-                              <div className="text-sm text-muted-foreground">Partidos</div>
-                              <div className="font-bold">{jugador.partidosAcumulados}</div>
-                            </div>
-                            <div>
-                              <div className="text-sm text-muted-foreground">Goles</div>
-                              <div className="font-bold">{jugador.golesAcumulados}</div>
-                            </div>
-                            <div>
-                              <div className="text-sm text-muted-foreground">Asistencias</div>
-                              <div className="font-bold">{jugador.asistenciasAcumuladas}</div>
-                            </div>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-              </div>
-            </TabsContent>
+        <Grid container spacing={3}>
+          {filteredJugadores.map((jugador) => (
+            <Grid item xs={12} sm={6} md={4} lg={3} key={jugador.id}>
+              <Card className="hover:shadow-lg transition-shadow">
+                <CardContent>
+                  <div className="flex flex-col items-center">
+                    <img
+                      src={jugador.imagen}
+                      alt={jugador.apodo}
+                      className="w-32 h-32 rounded-full object-cover mb-4"
+                      onError={(e) => {
+                        e.target.src = '/assets/jugadores/default.png';
+                      }}
+                    />
+                    <Typography variant="h6" component="h2" className="text-center">
+                      {jugador.apodo}
+                    </Typography>
+                    <Typography color="textSecondary" gutterBottom>
+                      #{jugador.chaleco}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      {jugador.posicion}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      {jugador.pierna}
+                    </Typography>
+                    {jugador.equipoNacional && (
+                      <Typography variant="body2" color="textSecondary">
+                        {jugador.equipoNacional}
+                      </Typography>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            </Grid>
           ))}
-        </Tabs>
+        </Grid>
 
         {filteredJugadores.length === 0 && (
-          <div className="text-center py-12">
-            <p className={cn(
-              "text-gray-500 dark:text-gray-400 text-lg"
-            )}>
+          <Box textAlign="center" py={4}>
+            <Typography variant="body1" color="textSecondary">
               No se encontraron jugadores que coincidan con tu búsqueda.
-            </p>
-          </div>
+            </Typography>
+          </Box>
         )}
       </div>
     </div>

@@ -17,64 +17,33 @@ const Estadisticas = () => {
     const fetchStats = async () => {
       try {
         console.log('Iniciando petición a la API...');
-        const response = await axios.get('http://localhost:3001/api/stats', {
-          timeout: 10000, // 10 segundos de timeout
+        const response = await axios.get('/api/stats', {
+          timeout: 30000,
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
           }
         });
         
-        console.log('Respuesta recibida:', {
-          status: response.status,
-          statusText: response.statusText,
-          data: response.data
-        });
-        
-        if (!response.data || response.data.length === 0) {
-          throw new Error('No se encontraron datos de estadísticas');
-        }
-        
-        // Transformar los datos para asegurar que todos los valores numéricos sean números
-        const datosTransformados = response.data.map(jugador => {
-          console.log('Procesando jugador:', jugador);
-          return {
-            ...jugador,
-            orden: Number(jugador.orden) || 0,
-            partidosAcumulados: Number(jugador.partidosAcumulados) || 0,
-            golesAcumulados: Number(jugador.golesAcumulados) || 0,
-            asistenciasAcumuladas: Number(jugador.asistenciasAcumuladas) || 0,
-            tta: Number(jugador.tta) || 0,
-            ttr: Number(jugador.ttr) || 0,
-            mvps: Number(jugador.mvps) || 0,
-            media: Number(jugador.media) || 0
-          };
-        });
-        
-        console.log('Datos transformados:', datosTransformados);
-        setJugadores(datosTransformados);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error detallado:', {
-          message: error.message,
-          response: error.response?.data,
-          status: error.response?.status,
-          config: error.config
-        });
-        
-        let mensajeError = 'Error al cargar las estadísticas. ';
-        if (error.response) {
-          // El servidor respondió con un código de error
-          mensajeError += `Error ${error.response.status}: ${error.response.data?.message || 'Error del servidor'}`;
-        } else if (error.request) {
-          // La petición fue hecha pero no se recibió respuesta
-          mensajeError += 'No se pudo conectar con el servidor. Verifica que esté corriendo.';
+        if (response.data && Array.isArray(response.data)) {
+          console.log('Datos recibidos:', response.data.length, 'estadísticas');
+          setJugadores(response.data);
         } else {
-          // Error al configurar la petición
-          mensajeError += error.message;
+          console.error('Formato de datos inválido:', response.data);
+          setError('Formato de datos inválido recibido del servidor');
         }
-        
-        setError(mensajeError);
+      } catch (error) {
+        console.error('Error detallado:', error);
+        if (error.code === 'ECONNABORTED') {
+          setError('La solicitud tardó demasiado en responder. Por favor, intente nuevamente.');
+        } else if (error.response) {
+          setError(`Error del servidor: ${error.response.status} - ${error.response.data?.message || 'Error desconocido'}`);
+        } else if (error.request) {
+          setError('No se pudo conectar con el servidor. Verifica que esté corriendo.');
+        } else {
+          setError('Error al cargar las estadísticas: ' + error.message);
+        }
+      } finally {
         setLoading(false);
       }
     };
@@ -90,14 +59,16 @@ const Estadisticas = () => {
   };
 
   const jugadoresFiltrados = jugadores
-    .filter(jugador => 
-      jugador.nombre?.toLowerCase().includes(filtro.toLowerCase()) ||
-      jugador.chaleco?.toString().toLowerCase().includes(filtro.toLowerCase())
-    )
+    .filter(jugador => {
+      const nombre = String(jugador.nombre || '');
+      const chaleco = String(jugador.chaleco || '');
+      const busqueda = filtro.toLowerCase();
+      return nombre.toLowerCase().includes(busqueda) || chaleco.toLowerCase().includes(busqueda);
+    })
     .sort((a, b) => {
       const factor = orden.direccion === 'asc' ? 1 : -1;
-      const valorA = a[orden.campo] || 0;
-      const valorB = b[orden.campo] || 0;
+      const valorA = Number(a[orden.campo] || 0);
+      const valorB = Number(b[orden.campo] || 0);
       return (valorA - valorB) * factor;
     });
 
@@ -208,31 +179,31 @@ const Estadisticas = () => {
                   {jugador.orden}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {jugador.nombre}
+                  {String(jugador.nombre || '')}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {jugador.chaleco}
+                  {String(jugador.chaleco || '')}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {jugador.partidosAcumulados}
+                  {Number(jugador.partidosAcumulados || 0)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {jugador.golesAcumulados}
+                  {Number(jugador.golesAcumulados || 0)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {jugador.asistenciasAcumuladas}
+                  {Number(jugador.asistenciasAcumuladas || 0)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {jugador.tta}
+                  {Number(jugador.tta || 0)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {jugador.ttr}
+                  {Number(jugador.ttr || 0)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {jugador.mvps}
+                  {Number(jugador.mvps || 0)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {jugador.media}
+                  {Number(jugador.media || 0).toFixed(2)}
                 </td>
               </tr>
             ))}
