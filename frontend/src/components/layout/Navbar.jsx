@@ -118,33 +118,22 @@ const Navbar = () => {
             Plantilla
           </Link>
           <Link
-            to="/eventos"
-            className="block px-3 py-2 rounded-md text-base font-medium text-gray-900 dark:text-white hover:text-gray-600 dark:hover:text-gray-300"
-          >
-            Eventos
-          </Link>
-          <Link
-            to="/miembros"
+            to="/jornadas"
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-900 dark:text-white hover:text-gray-600 dark:hover:text-gray-300"
           >
             Jornadas
           </Link>
           <Link
-            to="/jornadas"
+            to="/estadisticas"
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-900 dark:text-white hover:text-gray-600 dark:hover:text-gray-300"
           >
             Estadísticas
           </Link>
           <Link
-            to="/estadisticas"
-            className="block px-3 py-2 rounded-md text-base font-medium text-gray-900 dark:text-white hover:text-gray-600 dark:hover:text-gray-300"
-          >
-            Contacto
-          </Link>
-          <Link
             to="/contacto"
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-900 dark:text-white hover:text-gray-600 dark:hover:text-gray-300"
           >
+            Contacto
           </Link>
         </div>
       </div>

@@ -11,14 +11,13 @@ export default defineConfig({
     },
   },
   server: {
-    port: 3000,
+    port: 5173,
     strictPort: true,
     proxy: {
       '/api': {
-        target: 'http://localhost:3001',
+        target: 'http://localhost:3000',
         changeOrigin: true,
-        secure: false,
-        rewrite: (path) => path
+        secure: false
       }
     },
   },

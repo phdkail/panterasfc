@@ -1,6 +1,144 @@
 # Panteras FC - Sitio Web Oficial
 
-Este es el sitio web oficial del equipo Panteras FC, desarrollado con React, Vite, Tailwind CSS y Node.js.
+Este es el sitio web oficial del equipo Panteras FC. Sigue estas instrucciones paso a paso para configurar el proyecto en tu computadora.
+
+## 📋 Requisitos Previos
+
+Antes de comenzar, necesitas instalar estos programas en tu computadora:
+
+1. **Node.js y npm** (Administrador de paquetes de Node)
+   - Descarga desde: https://nodejs.org/
+   - Selecciona la versión "LTS" (Long Term Support)
+   - Sigue las instrucciones de instalación
+   - Para verificar la instalación, abre la terminal y escribe:
+     ```bash
+     node --version
+     npm --version
+     ```
+
+2. **Git** (Sistema de control de versiones)
+   - Descarga desde: https://git-scm.com/downloads
+   - Sigue las instrucciones de instalación
+   - Para verificar la instalación, abre la terminal y escribe:
+     ```bash
+     git --version
+     ```
+
+3. **Excel** (Para editar estadísticas)
+   - Microsoft Excel o cualquier programa que pueda abrir archivos .xlsx
+
+## 🚀 Instalación Paso a Paso
+
+### 1. Descargar el Proyecto
+
+1. Abre la terminal (Command Prompt en Windows o Terminal en Mac)
+2. Navega a la carpeta donde quieres guardar el proyecto
+3. Ejecuta estos comandos:
+   ```bash
+   git clone https://github.com/tu-usuario/panteras.git
+   cd panteras
+   ```
+
+### 2. Configurar el Backend (Servidor)
+
+1. Abre la terminal y navega a la carpeta del backend:
+   ```bash
+   cd backend
+   ```
+
+2. Instala las dependencias necesarias:
+   ```bash
+   npm install
+   ```
+
+3. Asegúrate de que el archivo `PanterasFC.xlsx` esté en la carpeta `backend/data/`
+
+### 3. Configurar el Frontend (Interfaz de Usuario)
+
+1. Abre una nueva terminal y navega a la carpeta del frontend:
+   ```bash
+   cd frontend
+   ```
+
+2. Instala las dependencias necesarias:
+   ```bash
+   npm install
+   ```
+
+## 🏃‍♂️ Cómo Iniciar el Proyecto
+
+### IMPORTANTE: Debes abrir DOS terminales diferentes
+
+#### Terminal 1 - Backend
+1. Abre una terminal
+2. Navega a la carpeta del backend:
+   ```bash
+   cd backend
+   ```
+3. Inicia el servidor:
+   ```bash
+   npm start
+   ```
+4. Deberías ver un mensaje que dice "Servidor iniciado en el puerto 3000"
+
+#### Terminal 2 - Frontend
+1. Abre una NUEVA terminal (no cierres la anterior)
+2. Navega a la carpeta del frontend:
+   ```bash
+   cd frontend
+   ```
+3. Inicia la aplicación:
+   ```bash
+   npm run dev
+   ```
+4. Se abrirá automáticamente tu navegador en http://localhost:3000
+
+## 🔍 Verificar que todo funciona
+
+1. **Backend**:
+   - Abre tu navegador y visita: http://localhost:3000/api/jornadas
+   - Deberías ver los datos en formato JSON
+   - Si ves un error, revisa la terminal del backend
+
+2. **Frontend**:
+   - Abre tu navegador y visita: http://localhost:3000
+   - Deberías ver la interfaz del sitio web
+   - Si no ves nada, revisa la terminal del frontend
+
+## 📝 Actualización de Estadísticas
+
+Para actualizar las estadísticas del equipo:
+
+1. Abre el archivo `PanterasFC.xlsx` en la carpeta `backend/data/`
+2. Edita los datos según sea necesario
+3. Guarda los cambios
+4. Reinicia el servidor backend (detén el servidor con Ctrl+C y vuelve a ejecutar `npm start`)
+
+## ❓ Solución de Problemas Comunes
+
+Si algo no funciona:
+
+1. **El servidor no inicia**
+   - Verifica que Node.js esté instalado correctamente
+   - Asegúrate de estar en la carpeta correcta (backend o frontend)
+   - Revisa que el archivo Excel esté en la ubicación correcta
+
+2. **La página web no se carga**
+   - Verifica que el servidor backend esté corriendo
+   - Asegúrate de que el frontend esté iniciado
+   - Intenta abrir http://localhost:3000 manualmente en tu navegador
+
+3. **Error al instalar dependencias**
+   - Asegúrate de tener una conexión a internet estable
+   - Intenta ejecutar `npm install` nuevamente
+   - Si el problema persiste, contacta al administrador
+
+## 📞 Soporte
+
+Si necesitas ayuda adicional:
+- Revisa la documentación en este README
+- Contacta al administrador del proyecto
+- Crea un issue en el repositorio de GitHub
 
 ## Estructura del Proyecto
 
@@ -29,32 +167,6 @@ Panteras/
 │
 ├── tailwind.config.js     # Configuración de Tailwind
 └── postcss.config.js      # Configuración de PostCSS
-```
-
-## Requisitos Previos
-
-- Node.js (v16 o superior)
-- npm (v8 o superior)
-- Excel (para editar el archivo de estadísticas)
-
-## Instalación
-
-1. Clonar el repositorio:
-```bash
-git clone https://github.com/tu-usuario/panteras.git
-cd panteras
-```
-
-2. Instalar dependencias del frontend:
-```bash
-cd frontend
-npm install
-```
-
-3. Instalar dependencias del backend:
-```bash
-cd ../backend
-npm install
 ```
 
 ## Dependencias Principales
@@ -93,22 +205,6 @@ npm install
    - Jornadas
    - Resultados
 
-## Ejecución
-
-1. Iniciar el servidor backend:
-```bash
-cd backend
-npm start
-```
-
-2. Iniciar el frontend:
-```bash
-cd frontend
-npm run dev
-```
-
-3. Abrir el navegador en `http://localhost:5173`
-
 ## Características
 
 - Visualización de estadísticas de jugadores
@@ -122,14 +218,6 @@ npm run dev
 Para actualizar las estadísticas:
 1. Editar el archivo `PanterasFC.xlsx` en la carpeta `backend/data/`
 2. Reiniciar el servidor backend
-
-## Solución de Problemas
-
-Si encuentras algún error:
-1. Verifica que el servidor backend esté corriendo
-2. Asegúrate de que el archivo Excel esté en la ubicación correcta
-3. Revisa la consola del navegador para mensajes de error
-4. Verifica los logs del servidor backend
 
 ## Contribución
 

@@ -60,8 +60,8 @@ const Estadisticas = () => {
 
   const jugadoresFiltrados = jugadores
     .filter(jugador => {
-      const nombre = String(jugador.nombre || '');
-      const chaleco = String(jugador.chaleco || '');
+      const nombre = String(jugador.chaleco || '');
+      const chaleco = String(jugador.nombre || '');
       const busqueda = filtro.toLowerCase();
       return nombre.toLowerCase().includes(busqueda) || chaleco.toLowerCase().includes(busqueda);
     })
@@ -111,61 +111,61 @@ const Estadisticas = () => {
           <thead>
             <tr>
               <th 
-                className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer"
+                className="px-6 py-3 border-b-2 border-gray-300 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer w-16"
                 onClick={() => handleOrdenar('orden')}
               >
-                Orden {orden.campo === 'orden' && (orden.direccion === 'asc' ? '↑' : '↓')}
+                # {orden.campo === 'orden' && (orden.direccion === 'asc' ? '↑' : '↓')}
               </th>
               <th 
-                className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer"
-                onClick={() => handleOrdenar('nombre')}
-              >
-                Nombre {orden.campo === 'nombre' && (orden.direccion === 'asc' ? '↑' : '↓')}
-              </th>
-              <th 
-                className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer"
+                className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer w-48"
                 onClick={() => handleOrdenar('chaleco')}
               >
-                Chaleco {orden.campo === 'chaleco' && (orden.direccion === 'asc' ? '↑' : '↓')}
+                Nombre {orden.campo === 'chaleco' && (orden.direccion === 'asc' ? '↑' : '↓')}
               </th>
               <th 
-                className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer"
+                className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer w-48"
+                onClick={() => handleOrdenar('nombre')}
+              >
+                N° Camiseta {orden.campo === 'nombre' && (orden.direccion === 'asc' ? '↑' : '↓')}
+              </th>
+              <th 
+                className="px-6 py-3 border-b-2 border-gray-300 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer w-24"
                 onClick={() => handleOrdenar('partidosAcumulados')}
               >
-                Partidos {orden.campo === 'partidosAcumulados' && (orden.direccion === 'asc' ? '↑' : '↓')}
+                PJ {orden.campo === 'partidosAcumulados' && (orden.direccion === 'asc' ? '↑' : '↓')}
               </th>
               <th 
-                className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer"
+                className="px-6 py-3 border-b-2 border-gray-300 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer w-24"
                 onClick={() => handleOrdenar('golesAcumulados')}
               >
-                Goles {orden.campo === 'golesAcumulados' && (orden.direccion === 'asc' ? '↑' : '↓')}
+                G {orden.campo === 'golesAcumulados' && (orden.direccion === 'asc' ? '↑' : '↓')}
               </th>
               <th 
-                className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer"
+                className="px-6 py-3 border-b-2 border-gray-300 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer w-24"
                 onClick={() => handleOrdenar('asistenciasAcumuladas')}
               >
-                Asistencias {orden.campo === 'asistenciasAcumuladas' && (orden.direccion === 'asc' ? '↑' : '↓')}
+                A {orden.campo === 'asistenciasAcumuladas' && (orden.direccion === 'asc' ? '↑' : '↓')}
               </th>
               <th 
-                className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer"
+                className="px-6 py-3 border-b-2 border-gray-300 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer w-24"
                 onClick={() => handleOrdenar('tta')}
               >
                 TTA {orden.campo === 'tta' && (orden.direccion === 'asc' ? '↑' : '↓')}
               </th>
               <th 
-                className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer"
+                className="px-6 py-3 border-b-2 border-gray-300 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer w-24"
                 onClick={() => handleOrdenar('ttr')}
               >
                 TTR {orden.campo === 'ttr' && (orden.direccion === 'asc' ? '↑' : '↓')}
               </th>
               <th 
-                className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer"
+                className="px-6 py-3 border-b-2 border-gray-300 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer w-24"
                 onClick={() => handleOrdenar('mvps')}
               >
-                MVPs {orden.campo === 'mvps' && (orden.direccion === 'asc' ? '↑' : '↓')}
+                MVP {orden.campo === 'mvps' && (orden.direccion === 'asc' ? '↑' : '↓')}
               </th>
               <th 
-                className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer"
+                className="px-6 py-3 border-b-2 border-gray-300 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer w-24"
                 onClick={() => handleOrdenar('media')}
               >
                 Media {orden.campo === 'media' && (orden.direccion === 'asc' ? '↑' : '↓')}
@@ -175,34 +175,34 @@ const Estadisticas = () => {
           <tbody>
             {jugadoresFiltrados.map((jugador, index) => (
               <tr key={index} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
                   {jugador.orden}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {String(jugador.nombre || '')}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
                   {String(jugador.chaleco || '')}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                  {String(jugador.nombre || '')}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
                   {Number(jugador.partidosAcumulados || 0)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
                   {Number(jugador.golesAcumulados || 0)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
                   {Number(jugador.asistenciasAcumuladas || 0)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
                   {Number(jugador.tta || 0)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
                   {Number(jugador.ttr || 0)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
                   {Number(jugador.mvps || 0)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
                   {Number(jugador.media || 0).toFixed(2)}
                 </td>
               </tr>

@@ -14,7 +14,7 @@ const Plantilla = () => {
     const fetchJugadores = async () => {
       try {
         console.log('Intentando conectar con el backend...');
-        const response = await fetch('http://localhost:3001/api/jugadores', {
+        const response = await fetch('/api/jugadores', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -43,14 +43,28 @@ const Plantilla = () => {
   }, []);
 
   const filteredJugadores = jugadores.filter(jugador => {
-    const matchesSearch = jugador.apodo.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         jugador.chaleco.toString().includes(searchTerm);
+    // Manejo seguro de búsqueda
+    const searchTermLower = searchTerm.toLowerCase();
+    const apodo = jugador.apodo?.toLowerCase() || '';
+    const chaleco = jugador.chaleco?.toString().toLowerCase() || '';
+    const posicion = jugador.posicion?.toLowerCase() || '';
+    const pierna = jugador.pierna?.toLowerCase() || '';
+    const equipoNacional = jugador.equipoNacional?.toLowerCase() || '';
+    const equipoInternacional = jugador.equipoInternacional?.toLowerCase() || '';
     
+    const matchesSearch = apodo.includes(searchTermLower) || 
+                         chaleco.includes(searchTermLower) ||
+                         posicion.includes(searchTermLower) ||
+                         pierna.includes(searchTermLower) ||
+                         equipoNacional.includes(searchTermLower) ||
+                         equipoInternacional.includes(searchTermLower);
+    
+    // Manejo seguro de filtro por posición
     const matchesFilter = filter === 'todos' || 
-                         (filter === 'porteros' && jugador.posicion.toLowerCase() === 'portero') ||
-                         (filter === 'defensas' && jugador.posicion.toLowerCase() === 'defensa') ||
-                         (filter === 'mediocentros' && jugador.posicion.toLowerCase() === 'mediocentro') ||
-                         (filter === 'delanteros' && jugador.posicion.toLowerCase() === 'delantero');
+                         (filter === 'Porteros' && posicion.includes('portero')) ||
+                         (filter === 'Defensas' && posicion.includes('defensa')) ||
+                         (filter === 'Mediocampistas' && posicion.includes('mediocampista')) ||
+                         (filter === 'Delanteros' && posicion.includes('delantero'));
 
     return matchesSearch && matchesFilter;
   });
@@ -108,9 +122,12 @@ const Plantilla = () => {
                 "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
                 "sm:text-sm"
               )}
-              placeholder="Buscar por nombre o chaleco..."
+              placeholder="Buscar por nombre, número, posición, pierna o equipo..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value;
+                setSearchTerm(value);
+              }}
             />
           </div>
 
@@ -127,45 +144,50 @@ const Plantilla = () => {
               onChange={(e) => setFilter(e.target.value)}
             >
               <option value="todos">Todos</option>
-              <option value="porteros">Porteros</option>
-              <option value="defensas">Defensas</option>
-              <option value="mediocentros">Mediocentros</option>
-              <option value="delanteros">Delanteros</option>
+              <option value="Porteros">Porteros</option>
+              <option value="Defensas">Defensas</option>
+              <option value="Mediocampistas">Mediocampistas</option>
+              <option value="Delanteros">Delanteros</option>
             </select>
           </div>
         </div>
 
-        <Grid container spacing={3}>
+        <Grid container spacing={4} className="justify-center">
           {filteredJugadores.map((jugador) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={jugador.id}>
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardContent>
-                  <div className="flex flex-col items-center">
-                    <img
-                      src={jugador.imagen}
-                      alt={jugador.apodo}
-                      className="w-32 h-32 rounded-full object-cover mb-4"
-                      onError={(e) => {
-                        e.target.src = '/assets/jugadores/default.png';
-                      }}
-                    />
-                    <Typography variant="h6" component="h2" className="text-center">
-                      {jugador.apodo}
+            <Grid item xs={12} sm={6} md={4} lg={3} key={jugador.id} className="flex justify-center">
+              <Card className="hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 w-[300px] h-[500px] flex flex-col">
+                <CardContent className="p-6 flex-grow flex flex-col">
+                  <div className="flex flex-col items-center space-y-4 h-full">
+                    <div className="flex-shrink-0">
+                      <img
+                        src={jugador.imagen}
+                        alt={jugador.apodo}
+                        className="w-40 h-40 rounded-full object-cover border-4 border-blue-500 shadow-lg"
+                        onError={(e) => {
+                          e.target.src = '/assets/jugadores/default.png';
+                        }}
+                      />
+                    </div>
+                    <Typography variant="h5" component="h2" className="text-center font-bold text-gray-800 dark:text-white">
+                      {jugador.apodo || '--'}
                     </Typography>
-                    <Typography color="textSecondary" gutterBottom>
-                      #{jugador.chaleco}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary">
-                      {jugador.posicion}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary">
-                      {jugador.pierna}
-                    </Typography>
-                    {jugador.equipoNacional && (
-                      <Typography variant="body2" color="textSecondary">
-                        {jugador.equipoNacional}
+                    <div className="w-full space-y-2 flex-grow flex flex-col justify-center">
+                      <Typography className="text-gray-700 dark:text-gray-300">
+                        <span className="font-bold">• N° Camiseta: </span> {jugador.chaleco.replace('N° Camiseta: ', '') || '--'}
                       </Typography>
-                    )}
+                      <Typography className="text-gray-700 dark:text-gray-300">
+                        <span className="font-bold">• Posición: </span> {jugador.posicion.replace('Posición: ', '') || '--'}
+                      </Typography>
+                      <Typography className="text-gray-700 dark:text-gray-300">
+                        <span className="font-bold">• Pierna Dominante: </span> {jugador.pierna.replace('Pierna Dominante: ', '') || '--'}
+                      </Typography>
+                      <Typography className="text-gray-700 dark:text-gray-300">
+                        <span className="font-bold">• Equipo Nacional: </span> {jugador.equipoNacional.replace('Equipo Nacional: ', '') || '--'}
+                      </Typography>
+                      <Typography className="text-gray-700 dark:text-gray-300">
+                        <span className="font-bold">• Equipo Internacional: </span> {jugador.equipoInternacional.replace('Equipo Internacional: ', '') || '--'}
+                      </Typography>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
