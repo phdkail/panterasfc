@@ -18,52 +18,78 @@ const Home = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        // Fetch jornadas, stats y jugadores
-        const [jornadasResponse, statsResponse, jugadoresResponse] = await Promise.all([
-          fetch('/api/jornadas'),
-          fetch('/api/stats'),
-          fetch('/api/jugadores')
+        setError(null);
+
+        const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+        
+        // Fetch jornadas, stats y jugadores con manejo de errores individual
+        const fetchWithErrorHandling = async (endpoint) => {
+          const response = await fetch(`${API_BASE_URL}${endpoint}`);
+          if (!response.ok) {
+            throw new Error(`Error ${response.status}: ${response.statusText}`);
+          }
+          const data = await response.json();
+          if (!data || (Array.isArray(data) && data.length === 0)) {
+            console.warn(`No se encontraron datos en ${endpoint}`);
+            return [];
+          }
+          return data;
+        };
+
+        const [jornadasData, statsData, jugadoresData] = await Promise.allSettled([
+          fetchWithErrorHandling('/api/jornadas'),
+          fetchWithErrorHandling('/api/stats'),
+          fetchWithErrorHandling('/api/jugadores')
         ]);
 
-        const jornadasData = await jornadasResponse.json();
-        const statsData = await statsResponse.json();
-        const jugadoresData = await jugadoresResponse.json();
+        // Manejar resultados de las promesas
+        setJornadas(jornadasData.status === 'fulfilled' ? jornadasData.value : []);
+        setStats(statsData.status === 'fulfilled' ? statsData.value : []);
+        setJugadores(jugadoresData.status === 'fulfilled' ? jugadoresData.value : []);
 
-        setJornadas(jornadasData);
-        setStats(statsData);
-        setJugadores(jugadoresData);
+        // Verificar si tenemos datos suficientes
+        if (jornadasData.status === 'rejected' || statsData.status === 'rejected' || jugadoresData.status === 'rejected') {
+          console.warn('Algunas llamadas a la API fallaron:', {
+            jornadas: jornadasData.status,
+            stats: statsData.status,
+            jugadores: jugadoresData.status
+          });
+        }
 
-        // Ordenar jugadores por media y MVPs
-        const jugadoresPorMedia = [...statsData]
-          .filter(stat => stat.media > 0)
-          .sort((a, b) => b.media - a.media)
-          .slice(0, 4)
-          .map(stat => ({
-            numeroChaleco: stat.nombre, // Columna D
-            apodo: stat.chaleco, // Columna C
-            media: stat.media, // Columna L
-            mvps: stat.mvps || 0, // Columna J
-            posicion: stat.posicion || 'Sin posición'
-          }));
+        // Procesar datos solo si tenemos stats
+        if (statsData.status === 'fulfilled' && statsData.value.length > 0) {
+          const jugadoresPorMedia = [...statsData.value]
+            .filter(stat => stat.media > 0)
+            .sort((a, b) => b.media - a.media)
+            .slice(0, 4)
+            .map(stat => ({
+              numeroChaleco: stat.nombre,
+              apodo: stat.chaleco,
+              media: stat.media,
+              mvps: stat.mvps || 0,
+              posicion: stat.posicion || 'Sin posición'
+            }));
 
-        const jugadoresPorMVPs = [...statsData]
-          .filter(stat => stat.mvps >= 0) // Incluir jugadores con 0 MVPs
-          .sort((a, b) => b.mvps - a.mvps)
-          .slice(0, 4)
-          .map(stat => ({
-            numeroChaleco: stat.nombre, // Columna D
-            apodo: stat.chaleco, // Columna C
-            media: stat.media, // Columna L
-            mvps: stat.mvps || 0, // Columna J
-            posicion: stat.posicion || 'Sin posición'
-          }));
+          const jugadoresPorMVPs = [...statsData.value]
+            .filter(stat => stat.mvps >= 0)
+            .sort((a, b) => b.mvps - a.mvps)
+            .slice(0, 4)
+            .map(stat => ({
+              numeroChaleco: stat.nombre,
+              apodo: stat.chaleco,
+              media: stat.media,
+              mvps: stat.mvps || 0,
+              posicion: stat.posicion || 'Sin posición'
+            }));
 
-        setJugadoresDestacadosPorMedia(jugadoresPorMedia);
-        setJugadoresDestacadosPorMVPs(jugadoresPorMVPs);
+          setJugadoresDestacadosPorMedia(jugadoresPorMedia);
+          setJugadoresDestacadosPorMVPs(jugadoresPorMVPs);
+        }
+
         setLoading(false);
       } catch (err) {
         console.error('Error al cargar los datos:', err);
-        setError('Error al cargar los datos. Por favor, intente nuevamente.');
+        setError('Error al cargar los datos. Por favor, intente nuevamente más tarde.');
         setLoading(false);
       }
     };
