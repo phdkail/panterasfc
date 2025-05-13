@@ -113,15 +113,15 @@ async function readExcelStats() {
       if (rowNumber > 1) { // Saltar la fila de encabezados
         rowCount++;
         try {
-          const nombre = getCellValue(row.getCell('D'));
           const chaleco = getCellValue(row.getCell('C'));
+          const nombre = getCellValue(row.getCell('D'));
           
           // Solo procesar filas que tengan nombre y chaleco válidos
           if (nombre && chaleco) {
             const jugador = {
               orden: rowCount, // Usamos el número de fila como orden
-              nombre: String(nombre),
               chaleco: String(chaleco),
+              nombre: String(nombre),
               partidosAcumulados: Number(getCellValue(row.getCell('E')) || 0),
               golesAcumulados: Number(getCellValue(row.getCell('F')) || 0),
               asistenciasAcumuladas: Number(getCellValue(row.getCell('G')) || 0),
