@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { Box, Typography, CircularProgress, Alert } from '@mui/material';
+import { fetchWithErrorHandling } from '../lib/api';
 
 const Estadisticas = () => {
   const [jugadores, setJugadores] = useState([]);
@@ -16,33 +17,13 @@ const Estadisticas = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        console.log('Iniciando petición a la API...');
-        const response = await axios.get('/api/stats', {
-          timeout: 30000,
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          }
-        });
-        
-        if (response.data && Array.isArray(response.data)) {
-          console.log('Datos recibidos:', response.data.length, 'estadísticas');
-          setJugadores(response.data);
-        } else {
-          console.error('Formato de datos inválido:', response.data);
-          setError('Formato de datos inválido recibido del servidor');
-        }
-      } catch (error) {
-        console.error('Error detallado:', error);
-        if (error.code === 'ECONNABORTED') {
-          setError('La solicitud tardó demasiado en responder. Por favor, intente nuevamente.');
-        } else if (error.response) {
-          setError(`Error del servidor: ${error.response.status} - ${error.response.data?.message || 'Error desconocido'}`);
-        } else if (error.request) {
-          setError('No se pudo conectar con el servidor. Verifica que esté corriendo.');
-        } else {
-          setError('Error al cargar las estadísticas: ' + error.message);
-        }
+        setLoading(true);
+        setError(null);
+        const data = await fetchWithErrorHandling('/api/stats');
+        setJugadores(data);
+      } catch (err) {
+        console.error('Error al cargar las estadísticas:', err);
+        setError('Error al cargar las estadísticas. Por favor, intente nuevamente más tarde.');
       } finally {
         setLoading(false);
       }

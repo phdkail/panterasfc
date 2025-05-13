@@ -8,6 +8,7 @@ import {
   Alert,
   Divider
 } from '@mui/material';
+import { fetchWithErrorHandling } from '../lib/api';
 
 const Jornadas = () => {
   const [jornadas, setJornadas] = useState([]);
@@ -17,33 +18,14 @@ const Jornadas = () => {
   useEffect(() => {
     const fetchJornadas = async () => {
       try {
-        console.log('🔍 INICIANDO BÚSQUEDA DE JORNADAS...');
-        const response = await fetch('/api/jornadas', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          }
-        });
-        
-        console.log('📡 Estado de la respuesta:', response.status);
-        
-        if (!response.ok) {
-          throw new Error(`Error HTTP: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        console.log('📦 DATOS RECIBIDOS:', JSON.stringify(data, null, 2));
-        
-        if (!Array.isArray(data)) {
-          throw new Error('Los datos recibidos no son un array');
-        }
-        
+        setLoading(true);
+        setError(null);
+        const data = await fetchWithErrorHandling('/api/jornadas');
         setJornadas(data);
-        setLoading(false);
-      } catch (error) {
-        console.error('❌ ERROR AL CARGAR JORNADAS:', error);
-        setError(`Error al cargar las jornadas: ${error.message}`);
+      } catch (err) {
+        console.error('Error al cargar las jornadas:', err);
+        setError('Error al cargar las jornadas. Por favor, intente nuevamente más tarde.');
+      } finally {
         setLoading(false);
       }
     };

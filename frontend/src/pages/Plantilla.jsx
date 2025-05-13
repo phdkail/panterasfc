@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, Typography, Grid, Box, CircularProgress, Alert } from '@mui/material';
 import { Search, Filter } from 'lucide-react';
 import { cn } from '../lib/utils';
+import { fetchWithErrorHandling } from '../lib/api';
 
 const Plantilla = () => {
   const [jugadores, setJugadores] = useState([]);
@@ -13,28 +14,14 @@ const Plantilla = () => {
   useEffect(() => {
     const fetchJugadores = async () => {
       try {
-        console.log('Intentando conectar con el backend...');
-        const response = await fetch('/api/jugadores', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          }
-        });
-        
-        console.log('Respuesta recibida:', response.status);
-        
-        if (!response.ok) {
-          throw new Error(`Error HTTP: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        console.log('Datos recibidos:', data);
+        setLoading(true);
+        setError(null);
+        const data = await fetchWithErrorHandling('/api/jugadores');
         setJugadores(data);
-        setLoading(false);
       } catch (err) {
-        console.error('Error al cargar los datos:', err);
-        setError(`Error al cargar los datos: ${err.message}`);
+        console.error('Error al cargar los jugadores:', err);
+        setError('Error al cargar los datos. Por favor, intente nuevamente más tarde.');
+      } finally {
         setLoading(false);
       }
     };
